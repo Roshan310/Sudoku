@@ -34,6 +34,11 @@ def num_has_row_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
     return this_num in left_nums or this_num in right_nums
 
 
+def make_move(loc: Tuple[int, int], number: int) -> None:
+    """Places the `number` at `loc` location in the grid"""
+    # TODO
+
+
 def num_has_column_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
     """Returns True if the number in `loc` location in the `grid` has a duplicate in the same column as it.
     Returns False otherwise.
