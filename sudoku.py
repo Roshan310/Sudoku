@@ -25,20 +25,22 @@ cell_nums = set()
 # check for duplicate in cell
 for num in grid[0]:
     if num in cell_nums:
-        print(f'There is a duplicate number {num}')
+        print(f"There is a duplicate number {num}")
     else:
         cell_nums.add(num)
+
 
 # check for duplicate in row
 num_to_check = "4"
 
 current_row = grid[0][0:3]
 # print(current_row)
-del current_row[current_row.index(num_to_check)]
 # print(current_row) #[9, 7]
 first_row = grid[1][0:3]
 second_row = grid[2][0:3]
 
+print(first_row)
+print(second_row)
 for num in current_row:
     if num in current_row or num in first_row or num in second_row:
         print(f"A duplicate {num} was found in ...")
