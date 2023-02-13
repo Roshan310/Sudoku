@@ -47,11 +47,11 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     The `loc` (0, 1) refers to the second number (index 1) of the first row (index 0) in the `grid`.
     """
 
-    row1, col1 = loc
-    this_num = grid[row1][col1]
+    _row, _col = loc
+    this_num = grid[_row][_col]
 
     # get numbers to the left and right of this number
-    column_nums = [grid[row][col1] for row in range(len(grid))]
+    column_nums = [grid[row][_col] for row in range(len(grid))]
     del column_nums[column_nums.index(this_num)]
     return this_num in column_nums
 
