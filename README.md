@@ -5,9 +5,11 @@ A simulation of a standard game of Sudoku with a `9 X 9` grid, with `3 X 3` sub-
 The goal is to fill each sub-grid with numbers 1-9 such that no number repeats.
 \
 Likewise, no number should be repeated in its own row or column.
+And no number should be repeated in its sub-grid too.
 \
 \
-A sample grid in the game is represented here, with some cells filled and some empty.
+A sample grid in the game is represented here, with some cells filled and some empty. The empty cells
+to be filled by the player.
 
 ```sh
     1   2   3   4   5   6   7   8   9

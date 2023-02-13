@@ -17,6 +17,7 @@ grid = [
 ]
 # fmt: on
 
+
 def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     """Returns True if the number in `loc` location in the `grid` has a duplicate in the same row as it.
     Returns False otherwise.
@@ -34,9 +35,9 @@ def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
 
 
 def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
-    """Places the `number` at `loc` location in the grid"""
+    """Places the `number` at `loc` location in the `grid`"""
     row, col = loc
-    if grid[row][col] == ' ':
+    if grid[row][col] == " ":
         grid[row][col] = str(number)
 
 
@@ -62,7 +63,24 @@ def num_has_sub_grid_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
 
     The `loc` (0, 1) refers to the second number (index 1) of the first row (index 0) in the `grid`.
     """
-    return True  # TODO
+    row, col = loc
+    this_num = grid[row][col]
+    if row in (1, 4, 7):
+        row -= 1
+    elif row in (2, 5, 8):
+        row -= 2
+
+    if col in (1, 4, 7):
+        col -= 1
+    elif col in (2, 5, 8):
+        col -= 2
+    count = 0
+    for i in range(row, row + 3):
+        for j in range(col, col + 3):
+            if this_num == grid[i][j]:
+                count += 1
+
+    return True if count > 1 else False
 
 
 def undo_move():
@@ -70,11 +88,22 @@ def undo_move():
     # TODO
 
 
-def sudoku_is_solved() -> bool:
+def sudoku_is_solved(grid: List[List[str]]) -> bool:
     """Returns True if the sudoku has been solved.
     Returns False otherwise.
     """
-    return True  # TODO
+    for row in range(len(grid)):
+        for col in range(len(grid)):
+            if grid[row][col] == " ":
+                return False
+            elif (
+                num_has_row_copy((row, col), grid)
+                or num_has_column_copy((row, col), grid)
+                or num_has_sub_grid_copy((row, col), grid)
+            ) == True:
+                return False
+
+    return True
 
 
 def get_a_hint(grid: List[List[str]]):
@@ -112,4 +141,3 @@ def get_sudoku_grid(grid: List[List[str]]) -> str:
     )
 
     return sudoku_grid
-
