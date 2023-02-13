@@ -5,15 +5,15 @@ from typing import List, Tuple
 # fmt: off
 # blank numbers are represented as '.'
 grid = [
-    '.6.8..5.6',
-    '..5...367',
-    '37..658.9',
-    '6.9..21..',
-    '..14892.4',
-    '...3.69..',
-    '.5....4..',
-    '.1.547..3',
-    '.96.38..1',
+    ['.', '6', '.', '8', '.', '.', '5', '.', '6'],
+    ['.', '.', '5', '.', '.', '.', '3', '6', '7'],
+    ['3', '7', '.', '.', '6', '5', '8', '.', '9'],
+    ['6', '.', '9', '.', '.', '2', '1', '.', '.'],
+    ['.', '.', '1', '4', '8', '9', '2', '.', '4'],
+    ['.', '.', '.', '3', '.', '6', '9', '.', '.'],
+    ['.', '5', '.', '.', '.', '.', '4', '.', '.'],
+    ['.', '1', '.', '5', '4', '7', '.', '.', '3'],
+    ['.', '9', '6', '.', '3', '8', '.', '.', '1'],
 ]
 # fmt: on
 
@@ -34,9 +34,11 @@ def num_has_row_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
     return this_num in left_nums or this_num in right_nums
 
 
-def make_move(loc: Tuple[int, int], number: int) -> None:
+def make_move(loc: Tuple[int, int], number: int, grid: List[str]) -> None:
     """Places the `number` at `loc` location in the grid"""
-    # TODO
+    row, col = loc
+    if grid[row][col] == '.':
+        grid[row][col] = number
 
 
 def num_has_column_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
@@ -45,7 +47,14 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
 
     The `loc` (0, 1) refers to the second number (index 1) of the first row (index 0) in the `grid`.
     """
-    return True  # TODO
+
+    row1, col1 = loc
+    this_num = grid[row1][col1]
+
+    # get numbers to the left and right of this number
+    column_nums = [grid[row][col1] for row in range(len(grid))]
+    del column_nums[column_nums.index(this_num)]
+    return this_num in column_nums
 
 
 def num_has_cell_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
@@ -104,3 +113,4 @@ def get_sudoku_grid(grid: List[str]) -> str:
     )
 
     return sudoku_grid
+
