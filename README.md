@@ -8,7 +8,8 @@ Likewise, no number should be repeated in its own row or column.
 And no number should be repeated in its sub-grid too.
 \
 \
-A sample grid in the game is represented here, with some cells filled and some empty.
+A sample grid in the game is represented here, with some cells filled and some empty. The empty cells
+to be filled by the player.
 
 ```sh
     1   2   3   4   5   6   7   8   9
