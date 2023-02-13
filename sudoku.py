@@ -98,8 +98,8 @@ def sudoku_is_solved(grid: List[List[str]]) -> bool:
                 return False
             elif (
                 num_has_row_copy((row, col), grid)
-                and num_has_column_copy((row, col), grid)
-                and num_has_sub_grid_copy((row, col), grid)
+                or num_has_column_copy((row, col), grid)
+                or num_has_sub_grid_copy((row, col), grid)
             ) == True:
                 return False
 
