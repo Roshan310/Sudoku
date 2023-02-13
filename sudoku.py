@@ -17,8 +17,7 @@ grid = [
 ]
 # fmt: on
 
-
-def num_has_row_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
+def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     """Returns True if the number in `loc` location in the `grid` has a duplicate in the same row as it.
     Returns False otherwise.
 
@@ -34,14 +33,14 @@ def num_has_row_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
     return this_num in left_nums or this_num in right_nums
 
 
-def make_move(loc: Tuple[int, int], number: int, grid: List[str]) -> None:
+def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
     """Places the `number` at `loc` location in the grid"""
     row, col = loc
     if grid[row][col] == '.':
         grid[row][col] = number
 
 
-def num_has_column_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
+def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     """Returns True if the number in `loc` location in the `grid` has a duplicate in the same column as it.
     Returns False otherwise.
 
@@ -57,7 +56,7 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
     return this_num in column_nums
 
 
-def num_has_cell_copy(loc: Tuple[int, int], grid: List[str]) -> bool:
+def num_has_cell_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     """Returns True if the number in `loc` location in the `grid` has a duplicate in the same cell.
     Returns False otherwise.
 
@@ -78,12 +77,12 @@ def sudoku_is_solved() -> bool:
     return True  # TODO
 
 
-def get_a_hint(grid: List[str]):
+def get_a_hint(grid: List[List[str]]):
     """Gives the player a hint, by revealing one or more numbers in the unsolved Sudoku."""
     # TODO
 
 
-def get_sudoku_grid(grid: List[str]) -> str:
+def get_sudoku_grid(grid: List[List[str]]) -> str:
     """Returns the sudoku grid, as a standard sudoku"""
 
     sudoku_grid = """
