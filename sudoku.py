@@ -37,7 +37,7 @@ def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
     """Places the `number` at `loc` location in the grid"""
     row, col = loc
     if grid[row][col] == '.':
-        grid[row][col] = number
+        grid[row][col] = str(number)
 
 
 def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
