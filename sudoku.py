@@ -17,6 +17,7 @@ grid = [
 ]
 # fmt: on
 
+
 def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     """Returns True if the number in `loc` location in the `grid` has a duplicate in the same row as it.
     Returns False otherwise.
@@ -34,9 +35,9 @@ def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
 
 
 def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
-    """Places the `number` at `loc` location in the `grid` """
+    """Places the `number` at `loc` location in the `grid`"""
     row, col = loc
-    if grid[row][col] == ' ':
+    if grid[row][col] == " ":
         grid[row][col] = str(number)
 
 
@@ -74,12 +75,13 @@ def num_has_sub_grid_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     elif col in (2, 5, 8):
         col -= 2
     count = 0
-    for i in range(row, row+3):
-        for j in range(col, col+3):
+    for i in range(row, row + 3):
+        for j in range(col, col + 3):
             if this_num == grid[i][j]:
                 count += 1
 
-    return True if count>1 else False
+    return True if count > 1 else False
+
 
 def undo_move():
     """Undoes a move made by the player."""
@@ -91,10 +93,16 @@ def sudoku_is_solved(grid: List[List[str]]) -> bool:
     Returns False otherwise.
     """
     for row in range(len(grid)):
-      for col in range(len(grid)):
-        if col == ' ':
-          return False
-        pass
+        for col in range(len(grid)):
+            if col == " ":
+                return False
+            elif (
+                num_has_row_copy((row, col), grid)
+                and num_has_column_copy((row, col), grid)
+                and num_has_sub_grid_copy((row, col), grid)
+            ) == False:
+                return True
+
 
 def get_a_hint(grid: List[List[str]]):
     """Gives the player a hint, by revealing one or more numbers in the unsolved Sudoku."""
@@ -131,4 +139,3 @@ def get_sudoku_grid(grid: List[List[str]]) -> str:
     )
 
     return sudoku_grid
-
