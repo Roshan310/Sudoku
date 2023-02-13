@@ -56,8 +56,8 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     return this_num in column_nums
 
 
-def num_has_cell_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
-    """Returns True if the number in `loc` location in the `grid` has a duplicate in the same cell.
+def num_has_sub_grid_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
+    """Returns True if the number in `loc` location in the `grid` has a duplicate in the same 3 X 3 sub-grid.
     Returns False otherwise.
 
     The `loc` (0, 1) refers to the second number (index 1) of the first row (index 0) in the `grid`.
