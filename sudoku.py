@@ -94,14 +94,16 @@ def sudoku_is_solved(grid: List[List[str]]) -> bool:
     """
     for row in range(len(grid)):
         for col in range(len(grid)):
-            if col == " ":
+            if grid[row][col] == " ":
                 return False
             elif (
                 num_has_row_copy((row, col), grid)
                 and num_has_column_copy((row, col), grid)
                 and num_has_sub_grid_copy((row, col), grid)
-            ) == False:
-                return True
+            ) == True:
+                return False
+
+    return True
 
 
 def get_a_hint(grid: List[List[str]]):
