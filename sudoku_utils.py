@@ -81,7 +81,6 @@ def build_grid(line: str) -> List[List[str]]:
     grid: List[List[str]] = []
     single_row = []
     
-    # build puzzle grid
     for index, char in enumerate(line):
         char = ' ' if char == '0' else char # replace 0s with empty strings
         if index == 0:
