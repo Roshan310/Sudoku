@@ -1,5 +1,5 @@
 import pytest
-from sudoku import make_move, num_has_row_copy
+from sudoku import make_move, num_has_row_copy, num_has_sub_grid_copy
 from sudoku_utils import translate_move, SudokuError
 
 
@@ -98,3 +98,27 @@ def test_values_are_placed_into_the_grid_correctly():
         make_move(move[0], move[1], grid)
 
     assert grid == expected
+
+
+def test_numbers_with_sub_grid_copies_are_caught():
+    grid = [
+        [' ', '6', ' ', '8', ' ', '3', '5', ' ', ' '],
+        [' ', ' ', '5', ' ', ' ', ' ', '3', '6', '7'],
+        ['3', '7', ' ', ' ', '6', '5', '8', ' ', '6'],
+        ['6', ' ', '9', ' ', ' ', '2', '1', '8', ' '],
+        [' ', ' ', '1', '4', '8', '9', '2', ' ', ' '],
+        [' ', ' ', ' ', '3', ' ', '6', '9', ' ', '4'],
+        ['1', '5', ' ', ' ', ' ', ' ', '4', ' ', ' '],
+        [' ', '1', ' ', '5', '4', '7', ' ', ' ', '3'],
+        [' ', '9', '6', ' ', '3', '8', ' ', ' ', '1'],
+    ]
+
+    assert not num_has_sub_grid_copy((0, 5), grid)
+    assert not num_has_sub_grid_copy((3, 7), grid)
+    assert not num_has_sub_grid_copy((5, 8), grid)
+    assert num_has_sub_grid_copy((2, 8), grid)
+    assert num_has_sub_grid_copy((6, 0), grid)
+
+    move = translate_move('6E2')
+    make_move(move[0], move[1], grid)
+    assert num_has_sub_grid_copy((4, 1), grid)
