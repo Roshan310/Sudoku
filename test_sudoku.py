@@ -1,6 +1,6 @@
 import pytest
-from sudoku import num_has_row_copy
-import sudoku_utils
+from sudoku import make_move, num_has_row_copy
+from sudoku_utils import translate_move, SudokuError
 
 
 def test_number_with_a_row_copy_is_caught():
@@ -33,30 +33,31 @@ def test_number_with_a_row_copy_is_caught():
     ],
 )
 def test_coordinates_are_translated_into_moves(coordinate_moves, actual_moves):
-    assert actual_moves == sudoku_utils.translate_move(coordinate_moves)
+    assert actual_moves == translate_move(coordinate_moves)
 
 
 def test_coordinates_that_are_longer_or_shorter_than_expected_are_caught():
     expected_message = 'Coordinate is invalid.\nThe legal format is <number><row number><column letter> or <number><column letter><row number>'
-    with pytest.raises(sudoku_utils.SudokuError, match=expected_message):
-        sudoku_utils.translate_move('1I89')
-        sudoku_utils.translate_move('21a4')
-        sudoku_utils.translate_move('1a4')
+    with pytest.raises(SudokuError, match=expected_message):
+        translate_move('1I89')
+        translate_move('21a4')
+        translate_move('1a4')
 
 
 def test_invalid_sudoku_number_in_coordinate_is_caught():
-    with pytest.raises(sudoku_utils.SudokuError, match='Only numbers from 1 to 8 can be placed into the grid.'):
-        sudoku_utils.translate_move('0A1')
-        sudoku_utils.translate_move('#E8')
+    with pytest.raises(SudokuError, match='Only numbers from 1 to 8 can be placed into the grid.'):
+        translate_move('0A1')
+        translate_move('#E8')
 
 
 def test_invalid_row_in_coordinate_is_caught():
-    with pytest.raises(sudoku_utils.SudokuError, match='Only row letters from A to I are allowed.'):
-        sudoku_utils.translate_move('2J3')
-        sudoku_utils.translate_move('89R')
+    with pytest.raises(SudokuError, match='Only row letters from A to I are allowed.'):
+        translate_move('2J3')
+        translate_move('89R')
 
 
 def test_invalid_column_in_coordinate_is_caught():
-    with pytest.raises(sudoku_utils.SudokuError, match='Only column numbers from 1 to 9 are allowed.'):
-        sudoku_utils.translate_move('3A0')
-        sudoku_utils.translate_move('80I')
+    with pytest.raises(SudokuError, match='Only column numbers from 1 to 9 are allowed.'):
+        translate_move('3A0')
+        translate_move('80I')
+
