@@ -3,7 +3,7 @@
 from typing import List, Tuple
 
 # fmt: off
-# blank numbers are represented as '.'
+# blank numbers are represented as ' '
 grid = [
     [' ', '6', ' ', '8', ' ', ' ', '5', ' ', ' '],
     [' ', ' ', '5', ' ', ' ', ' ', '3', '6', '7'],
