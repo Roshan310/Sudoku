@@ -1,6 +1,6 @@
 """General utility functions for the Sudoku grid"""
 
-from typing import Tuple
+from typing import Tuple, List
 
 LEGAL_COORDINATE_LENGTH = 3
 VALID_COLS = {1, 2, 3, 4, 5, 6, 7, 8, 9}
@@ -61,3 +61,34 @@ def translate_move(coordinate_move: str) -> Tuple[Tuple[int, int], int]:
                 raise SudokuError('Only column numbers from 1 to 9 are allowed.')
             
             return ((letter_rows[_row], int(_column) - 1), number)
+
+
+def build_puzzle_solution_pair(line: str) -> Tuple[List[List[str]], List[List[str]]]:
+    """Builds and returns a pair of the Sudoku puzzle and its solution, as a result of parsing the comma-separated `line`
+    representations of the puzzle and the solution respectively.
+    """
+    puzzle_repr, solution_repr = line.split(',')
+    puzzle = build_grid(puzzle_repr)
+    solution = build_grid(solution_repr)
+
+    return (puzzle, solution)
+
+
+def build_grid(line: str) -> List[List[str]]:
+    """Builds and returns a sudoku grid, which is a result of parsing the provided `line` representation of that grid.
+    """
+    ROW_LENGTH = 9
+    grid: List[List[str]] = []
+    single_row = []
+    
+    # build puzzle grid
+    for index, char in enumerate(line):
+        char = ' ' if char == '0' else char # replace 0s with empty strings
+        if index == 0:
+            single_row.append(char)
+        if index % ROW_LENGTH == 0: # build the next row of the Sudoku puzzle
+            grid.append(single_row)
+            single_row.clear()
+        else:
+            single_row.append(char)
+    return grid
