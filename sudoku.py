@@ -36,14 +36,6 @@ def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     return this_num in left_nums or this_num in right_nums
 
 
-def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
-    """Places the `number` at `loc` location in the `grid`"""
-    row, col = loc
-    if grid[row][col] == " ":
-        grid[row][col] = str(number)
-        board_state.append((loc, number))
-
-
 def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     """Returns True if the number in `loc` location in the `grid` has a duplicate in the same column as it.
     Returns False otherwise.
@@ -54,8 +46,10 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     _row, _col = loc
     this_num = grid[_row][_col]
 
-    # get numbers to the left and right of this number
+    #Get numbers from the current column
     column_nums = [grid[row][_col] for row in range(len(grid))]
+
+    #Delete the number that is being checked from the column
     del column_nums[column_nums.index(this_num)]
     return this_num in column_nums
 
@@ -86,15 +80,23 @@ def num_has_sub_grid_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     return True if count > 1 else False
 
 
+def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
+    """Places the `number` at `loc` location in the `grid`"""
+    row, col = loc
+    if grid[row][col] == " ":
+        grid[row][col] = str(number)
+        board_state.append((loc, number))
+
+  
 def undo_move():
     """Undoes a move made by the player."""
 
     if len(board_state) < 1:
-      print("You haven't made a move yet!")
-      return
+        print("You haven't made a move yet!")
+        return
     loc, number = board_state.pop()
     row, col = loc
-    grid[row][col] = ' '
+    grid[row][col] = " "
 
 
 def sudoku_is_solved(grid: List[List[str]]) -> bool:
