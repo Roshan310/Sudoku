@@ -88,7 +88,7 @@ def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
         board_state.append((loc, number))
 
   
-def undo_move():
+def undo_move(grid: List[List[str]]):
     """Undoes a move made by the player."""
 
     if len(board_state) < 1:

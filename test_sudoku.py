@@ -1,5 +1,5 @@
 import pytest
-from sudoku import make_move, num_has_row_copy, num_has_sub_grid_copy, num_has_column_copy
+from sudoku import make_move, num_has_row_copy, num_has_sub_grid_copy, num_has_column_copy, undo_move
 from sudoku_utils import translate_move, SudokuError
 
 
@@ -143,3 +143,44 @@ def test_number_with_a_column_copy_is_caught():
     make_move(move[0], move[1], faulty_grid)
     assert num_has_column_copy((3, 8), faulty_grid)
     assert num_has_column_copy((0, 2), faulty_grid)
+
+
+
+def test_undo_move():
+    grid = [
+        [' ', '6', ' ', '8', ' ', ' ', '5', ' ', ' '],
+        [' ', ' ', '5', ' ', ' ', ' ', '3', '6', '7'],
+        ['3', '7', ' ', ' ', '6', '5', '8', ' ', '9'],
+        ['6', ' ', '9', ' ', ' ', '2', '1', ' ', ' '],
+        [' ', ' ', '1', '4', '8', '9', '2', ' ', ' '],
+        [' ', ' ', ' ', '3', ' ', '6', '9', ' ', ' '],
+        [' ', '5', ' ', ' ', ' ', ' ', '4', ' ', ' '],
+        [' ', '1', ' ', '5', '4', '7', ' ', ' ', '3'],
+        [' ', '9', '6', ' ', '3', '8', ' ', ' ', '1'],
+    ]
+
+
+    expected = [
+        [' ', '6', ' ', '8', '7', ' ', '5', ' ', ' '],
+        [' ', ' ', '5', ' ', ' ', ' ', '3', '6', '7'],
+        ['3', '7', ' ', ' ', '6', '5', '8', ' ', '9'],
+        ['6', ' ', '9', ' ', ' ', '2', '1', ' ', ' '],
+        [' ', ' ', '1', '4', '8', '9', '2', ' ', ' '],
+        [' ', ' ', ' ', '3', ' ', '6', '9', ' ', ' '],
+        [' ', '5', '3', ' ', ' ', ' ', '4', ' ', ' '],
+        [' ', '1', ' ', '5', '4', '7', '6', ' ', '3'],
+        [' ', '9', '6', ' ', '3', '8', '7', ' ', '1'],
+    ]
+    moves = (
+        translate_move('7a5'),
+        translate_move('6h7'),
+        translate_move('77i'),
+        translate_move('3G3'),
+        translate_move('41I'),
+    )
+    for move in moves:
+        make_move(move[0], move[1], grid)
+
+    undo_move(grid)
+
+    assert grid == expected
