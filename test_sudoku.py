@@ -1,5 +1,5 @@
 import pytest
-from sudoku import make_move, num_has_row_copy, num_has_sub_grid_copy
+from sudoku import make_move, num_has_row_copy, num_has_sub_grid_copy, num_has_column_copy
 from sudoku_utils import translate_move, SudokuError
 
 
@@ -122,3 +122,24 @@ def test_numbers_with_sub_grid_copies_are_caught():
     move = translate_move('6E2')
     make_move(move[0], move[1], grid)
     assert num_has_sub_grid_copy((4, 1), grid)
+
+
+def test_number_with_a_column_copy_is_caught():
+    faulty_grid = [
+        [' ', '6', '1', '8', ' ', ' ', '5', ' ', '6'],
+        [' ', ' ', '5', ' ', ' ', ' ', '3', '6', '7'],
+        ['3', '7', ' ', ' ', '6', '5', '8', ' ', '9'],
+        ['6', ' ', '9', ' ', ' ', '2', '1', ' ', ' '],
+        [' ', ' ', '1', '4', '8', '9', '2', ' ', '4'],
+        [' ', ' ', ' ', '3', ' ', '6', '9', ' ', ' '],
+        ['3', '5', ' ', ' ', ' ', ' ', '4', ' ', ' '],
+        [' ', '1', ' ', '5', '4', '7', ' ', ' ', '3'],
+        [' ', '9', '6', ' ', '3', '8', ' ', ' ', '1'],
+    ]
+
+    assert num_has_column_copy((6, 0), faulty_grid)
+
+    move = translate_move('7D9')
+    make_move(move[0], move[1], faulty_grid)
+    assert num_has_column_copy((3, 8), faulty_grid)
+    assert num_has_column_copy((0, 2), faulty_grid)
