@@ -1,6 +1,7 @@
 """General utility functions for the Sudoku grid"""
 
 from typing import Tuple, List
+from collections import deque
 
 LEGAL_COORDINATE_LENGTH = 3
 VALID_COLS = {1, 2, 3, 4, 5, 6, 7, 8, 9}
@@ -79,15 +80,12 @@ def build_grid(line: str) -> List[List[str]]:
     """
     ROW_LENGTH = 9
     grid: List[List[str]] = []
-    single_row = []
+    single_row = deque()
     
-    for index, char in enumerate(line):
+    for char in line:
         char = ' ' if char == '0' else char # replace 0s with empty strings
-        if index == 0:
-            single_row.append(char)
-        if index % ROW_LENGTH == 0: # build the next row of the Sudoku puzzle
-            grid.append(single_row)
+        single_row.append(char)
+        if len(single_row) == ROW_LENGTH: # build the next row of the Sudoku puzzle
+            grid.append(list(single_row))
             single_row.clear()
-        else:
-            single_row.append(char)
     return grid
