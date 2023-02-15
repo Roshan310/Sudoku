@@ -1,7 +1,6 @@
 """General utility functions for the Sudoku grid"""
 
 from typing import Tuple, List
-from collections import deque
 
 LEGAL_COORDINATE_LENGTH = 3
 VALID_COLS = {1, 2, 3, 4, 5, 6, 7, 8, 9}
@@ -80,12 +79,12 @@ def build_grid(line: str) -> List[List[str]]:
     """
     ROW_LENGTH = 9
     grid: List[List[str]] = []
-    single_row = deque()
+    single_row = []
     
     for char in line:
         char = ' ' if char == '0' else char # replace every 0 with an empty space
         single_row.append(char)
         if len(single_row) == ROW_LENGTH: # prepare to build the next row
-            grid.append(list(single_row))
-            single_row.clear()
+            grid.append(single_row)
+            single_row = []
     return grid
