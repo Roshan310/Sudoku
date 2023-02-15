@@ -1,20 +1,39 @@
 """Simulates a game of Sudoku"""
 
+import csv
+import random
+from sudoku_utils import build_puzzle_solution_pair
 from typing import List, Tuple
+
+
+def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:     
+    """Returns a Tuple containing quiz and solution for the Sudoku game. """
+
+    with open(filename, 'r') as csv_file:
+        csv_reader = csv.DictReader(csv_file)
+        quiz_and_soln = [row for row in csv_reader]
+        solution = random.choices(quiz_and_soln)
+        grid_soln = solution[0]['solutions']
+        grid_question = solution[0]['quizzes']
+    
+    return (grid_question, grid_soln)
 
 # fmt: off
 # blank numbers are represented as ' '
-grid = [
-    [' ', '6', ' ', '8', ' ', ' ', '5', ' ', ' '],
-    [' ', ' ', '5', ' ', ' ', ' ', '3', '6', '7'],
-    ['3', '7', ' ', ' ', '6', '5', '8', ' ', '9'],
-    ['6', ' ', '9', ' ', ' ', '2', '1', ' ', ' '],
-    [' ', ' ', '1', '4', '8', '9', '2', ' ', ' '],
-    [' ', ' ', ' ', '3', ' ', '6', '9', ' ', ' '],
-    [' ', '5', ' ', ' ', ' ', ' ', '4', ' ', ' '],
-    [' ', '1', ' ', '5', '4', '7', ' ', ' ', '3'],
-    [' ', '9', '6', ' ', '3', '8', ' ', ' ', '1'],
-]
+line = get_quiz_and_solution_line('pre-solved-sudokus.txt')
+grid, grid_complete = build_puzzle_solution_pair(line)
+
+# grid = [
+#     [' ', '6', ' ', '8', ' ', ' ', '5', ' ', ' '],
+#     [' ', ' ', '5', ' ', ' ', ' ', '3', '6', '7'],
+#     ['3', '7', ' ', ' ', '6', '5', '8', ' ', '9'],
+#     ['6', ' ', '9', ' ', ' ', '2', '1', ' ', ' '],
+#     [' ', ' ', '1', '4', '8', '9', '2', ' ', ' '],
+#     [' ', ' ', ' ', '3', ' ', '6', '9', ' ', ' '],
+#     [' ', '5', ' ', ' ', ' ', ' ', '4', ' ', ' '],
+#     [' ', '1', ' ', '5', '4', '7', ' ', ' ', '3'],
+#     [' ', '9', '6', ' ', '3', '8', ' ', ' ', '1'],
+# ]
 # fmt: on
 
 board_state = []
@@ -123,7 +142,9 @@ def sudoku_is_solved(grid: List[List[str]]) -> bool:
 
 def get_a_hint(grid: List[List[str]]):
     """Gives the player a hint, by revealing one or more numbers in the unsolved Sudoku."""
-    # TODO
+    
+    row, col, number = get_loc_and_number_for_hint(grid, grid_complete)
+    make_move((row, col), number, grid)
 
 
 def get_sudoku_grid(grid: List[List[str]]) -> str:
@@ -158,3 +179,22 @@ def get_sudoku_grid(grid: List[List[str]]) -> str:
     return sudoku_grid
 
 
+def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
+    """Returns the location and number for the hint """
+
+    loc_and_num = []
+    quiz_and_soln = [(row1, row2) for row1, row2 in zip(grid_incomplete, grid_complete)]
+    hint_soln = random.choice(quiz_and_soln)
+    print(hint_soln)
+    quiz, soln = hint_soln
+    for row in range(9):
+        if grid_complete[row] == hint_soln[1]:
+            loc_and_num.append(row)
+            break
+    for num1, num2 in zip(quiz, soln):
+        if num1 != num2:
+            loc_and_num.append(soln.index(num2))
+            loc_and_num.append(num2)
+            break
+
+    return loc_and_num

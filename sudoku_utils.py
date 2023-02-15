@@ -63,11 +63,11 @@ def translate_move(coordinate_move: str) -> Tuple[Tuple[int, int], int]:
             return ((letter_rows[_row], int(_column) - 1), number)
 
 
-def build_puzzle_solution_pair(line: str) -> Tuple[List[List[str]], List[List[str]]]:
+def build_puzzle_solution_pair(line: Tuple) -> Tuple[List[List[str]], List[List[str]]]:
     """Builds and returns a pair of the Sudoku puzzle and its solution, as a result of parsing the comma-separated `line`
     representations of the puzzle and the solution respectively.
     """
-    puzzle_repr, solution_repr = line.split(',')
+    puzzle_repr, solution_repr = line
     puzzle = build_grid(puzzle_repr)
     solution = build_grid(solution_repr)
 
