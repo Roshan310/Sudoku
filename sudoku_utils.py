@@ -83,9 +83,9 @@ def build_grid(line: str) -> List[List[str]]:
     single_row = deque()
     
     for char in line:
-        char = ' ' if char == '0' else char # replace 0s with empty strings
+        char = ' ' if char == '0' else char # replace every 0 with an empty space
         single_row.append(char)
-        if len(single_row) == ROW_LENGTH: # build the next row of the Sudoku puzzle
+        if len(single_row) == ROW_LENGTH: # prepare to build the next row
             grid.append(list(single_row))
             single_row.clear()
     return grid
