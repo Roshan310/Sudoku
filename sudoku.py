@@ -83,17 +83,21 @@ def num_has_sub_grid_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
 def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
     """Places the `number` at `loc` location in the `grid`"""
     row, col = loc
+
+    #Check if the desired location is empty or not
     if grid[row][col] == " ":
         grid[row][col] = str(number)
         board_state.append((loc, number))
-
   
 def undo_move(grid: List[List[str]]):
     """Undoes a move made by the player."""
 
+    #Check if the player has made any previous move or not
     if len(board_state) < 1:
         print("You haven't made a move yet!")
         return
+
+    #Get the last location and number the player placed the move in grid
     loc, number = board_state.pop()
     row, col = loc
     grid[row][col] = " "
@@ -152,3 +156,5 @@ def get_sudoku_grid(grid: List[List[str]]) -> str:
     )
 
     return sudoku_grid
+
+
