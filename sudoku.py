@@ -167,7 +167,7 @@ def get_sudoku_grid(grid: List[List[str]]) -> str:
 
 
 def show_game_instructions() -> None:
-    """Returns the game's instructions"""
+    """Prints the game's instructions"""
     banner = dedent(
         """    
     ███████╗██╗   ██╗██████╗  ██████╗ ██╗  ██╗██╗   ██╗
