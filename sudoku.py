@@ -1,6 +1,9 @@
 """Simulates a game of Sudoku"""
 
 from typing import List, Tuple
+from textwrap import dedent
+from rich.table import Table
+from rich import print as rprint
 
 # fmt: off
 # blank numbers are represented as ' '
@@ -18,6 +21,10 @@ grid = [
 # fmt: on
 
 board_state = []
+
+
+def main():
+    show_game_instructions()
 
 
 def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
@@ -46,10 +53,10 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     _row, _col = loc
     this_num = grid[_row][_col]
 
-    #Get numbers from the current column
+    # Get numbers from the current column
     column_nums = [grid[row][_col] for row in range(len(grid))]
 
-    #Delete the number that is being checked from the column
+    # Delete the number that is being checked from the column
     del column_nums[column_nums.index(this_num)]
     return this_num in column_nums
 
@@ -84,20 +91,21 @@ def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
     """Places the `number` at `loc` location in the `grid`"""
     row, col = loc
 
-    #Check if the desired location is empty or not
+    # Check if the desired location is empty or not
     if grid[row][col] == " ":
         grid[row][col] = str(number)
         board_state.append((loc, number))
-  
+
+
 def undo_move(grid: List[List[str]]):
     """Undoes a move made by the player."""
 
-    #Check if the player has made any previous move or not
+    # Check if the player has made any previous move or not
     if len(board_state) < 1:
         print("You haven't made a move yet!")
         return
 
-    #Get the last location and number the player placed the move in grid
+    # Get the last location and number the player placed the move in grid
     loc, number = board_state.pop()
     row, col = loc
     grid[row][col] = " "
@@ -158,3 +166,50 @@ def get_sudoku_grid(grid: List[List[str]]) -> str:
     return sudoku_grid
 
 
+def show_game_instructions() -> None:
+    """Returns the game's instructions"""
+    banner = dedent(
+        """    
+    ███████╗██╗   ██╗██████╗  ██████╗ ██╗  ██╗██╗   ██╗
+    ██╔════╝██║   ██║██╔══██╗██╔═══██╗██║ ██╔╝██║   ██║
+    ███████╗██║   ██║██║  ██║██║   ██║█████╔╝ ██║   ██║
+    ╚════██║██║   ██║██║  ██║██║   ██║██╔═██╗ ██║   ██║
+    ███████║╚██████╔╝██████╔╝╚██████╔╝██║  ██╗╚██████╔╝
+    ╚══════╝ ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝
+    """
+    )
+    instructions_text = dedent(
+        """
+    The game consists of a large 9 X 9 grid of cells,
+    with smaller 3 X 3 sub-grids.
+
+    You win if you fill in the cells with numbers 1 to 9,
+    such that:
+
+    + No number is repeated in a sub-grid
+    + No number is repeated in its own row
+    + No number repeats in its own column
+    """
+    )
+    instructions = Table(show_header=False, show_lines=False)
+    instructions.add_column()
+    instructions.add_row(instructions_text)
+
+    game_keys_text = dedent(
+        """
+    GAME KEYS
+    u - undoes a move
+    h - gets a solution hint
+    """
+    )
+    game_keys = Table(show_header=False, show_lines=False)
+    game_keys.add_column()
+    game_keys.add_row(game_keys_text)
+    
+    print(banner)
+    rprint(instructions)
+    rprint(game_keys)
+
+
+if __name__ == '__main__':
+    main()
