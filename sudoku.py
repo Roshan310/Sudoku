@@ -2,7 +2,7 @@
 
 import csv
 import random
-from sudoku_utils import build_puzzle_solution_pair, translate_move
+from sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
 from typing import List, Tuple
 from textwrap import dedent
 from rich.table import Table
@@ -30,24 +30,29 @@ def main():
     clear_screen()
 
     print(get_sudoku_grid(grid))
-    get_game_keys()
+    rprint(get_game_keys())
 
-    # MINE IMPLEMENTATION
-    is_sudoku_solved = sudoku_is_solved(grid)
-    while not is_sudoku_solved:
-        loc_and_num = input("Enter the position and number in the mentioned format: ")
-        translated_move = translate_move(loc_and_num)
-        position, number = translated_move
-        make_move(position, number, grid)
-        print(get_sudoku_grid(grid))   
-        if sudoku_is_solved(grid):
-            break 
-    # while True:
-    #     prompt = input('Enter y to continue, q to quit\n> ')
-    #     if not prompt.lower() in ('y', 'q'):
-    #         print('Unknown choice. Try again!')
-    #     else:
-    #         pass
+    game_key_func = {
+        'u': 'undo_move(grid)', 
+        'h': 'get_a_hint(grid, solution)',
+        }
+
+    while True:
+        prompt = input('Enter move, or other game key\n> ').strip().lower()
+        if prompt in (tuple(GAME_KEYS.values())): # a game key was entered
+            eval(game_key_func[f'{prompt}'])
+        else:
+            try:
+                translate_move(prompt)
+            except SudokuError as e:
+                clear_screen()
+                print(get_sudoku_grid(grid))
+                rprint(get_game_keys())
+                rprint(f'[bold red]{e.error_message}')
+                continue
+        clear_screen()
+        print(get_sudoku_grid(grid))
+        rprint(get_game_keys())
 
 
 def prompt_to_continue() -> str:
@@ -150,7 +155,8 @@ def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
     if grid[row][col] == " ":
         grid[row][col] = str(number)
         board_state.append((loc, number))
-
+    else:
+        print("There's a number already in that position!!")
 
 def undo_move(grid: List[List[str]]):
     """Undoes a move made by the player."""
