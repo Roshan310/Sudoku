@@ -173,11 +173,11 @@ def sudoku_is_solved(grid: List[List[str]]) -> bool:
     return True
 
 
-def get_a_hint(grid: List[List[str]]):
+def get_a_hint(grid_incomplete: List[List[str]], grid_complete: List[List[str]]):
     """Gives the player a hint, by revealing one or more numbers in the unsolved Sudoku."""
     
-    row, col, number = get_loc_and_number_for_hint(grid, grid_complete)
-    make_move((row, col), number, grid)
+    row, col, number = get_loc_and_number_for_hint(grid_incomplete, grid_complete)
+    make_move((row, col), number, grid_incomplete)
 
 
 def get_sudoku_grid(grid: List[List[str]]) -> str:
