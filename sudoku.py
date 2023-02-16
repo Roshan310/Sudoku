@@ -2,7 +2,7 @@
 
 import csv
 import random
-from sudoku_utils import build_puzzle_solution_pair
+from sudoku_utils import build_puzzle_solution_pair, translate_move
 from typing import List, Tuple
 from textwrap import dedent
 from rich.table import Table
@@ -32,11 +32,22 @@ def main():
     print(get_sudoku_grid(grid))
     get_game_keys()
 
-    while True:
-        prompt = input('Enter y to continue, q to quit\n> ')
-        if not prompt.lower() in ('y', 'q'):
-            print('Unknown choice. Try again!')
-        else:
+    # MINE IMPLEMENTATION
+    is_sudoku_solved = sudoku_is_solved(grid)
+    while not is_sudoku_solved:
+        loc_and_num = input("Enter the position and number in the mentioned format: ")
+        translated_move = translate_move(loc_and_num)
+        position, number = translated_move
+        make_move(position, number, grid)
+        print(get_sudoku_grid(grid))   
+        if sudoku_is_solved(grid):
+            break 
+    # while True:
+    #     prompt = input('Enter y to continue, q to quit\n> ')
+    #     if not prompt.lower() in ('y', 'q'):
+    #         print('Unknown choice. Try again!')
+    #     else:
+    #         pass
 
 
 def prompt_to_continue() -> str:

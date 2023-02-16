@@ -31,7 +31,7 @@ def translate_move(coordinate_move: str) -> Tuple[Tuple[int, int], int]:
             'Coordinate is invalid.\nThe legal format is <number><row number><column letter> or <number><column letter><row number>'
         )
 
-    if not (coordinate_move[0].isdecimal() and 1 <= int(coordinate_move[0]) <= 8):
+    if not (coordinate_move[0].isdecimal() and 1 <= int(coordinate_move[0]) <= 9):
         raise SudokuError('Only numbers from 1 to 8 can be placed into the grid.')
     
     number = int(coordinate_move[0])
