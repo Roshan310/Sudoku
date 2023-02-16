@@ -15,9 +15,9 @@ def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:
     with open(filename, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         quiz_and_soln = [row for row in csv_reader]
-        solution = random.choices(quiz_and_soln)
-        grid_soln = solution[0]['solutions']
-        grid_question = solution[0]['quizzes']
+        solution = random.choice(quiz_and_soln)
+        grid_soln = solution['solutions']
+        grid_question = solution['quizzes']
     
     return (grid_question, grid_soln)
 
@@ -44,6 +44,7 @@ board_state = []
 
 def main():
     show_game_instructions()
+    
 
 
 def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
