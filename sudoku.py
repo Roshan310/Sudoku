@@ -272,16 +272,7 @@ def show_game_instructions() -> None:
     instructions.add_column()
     instructions.add_row(instructions_text)
 
-    game_keys_text = dedent(
-        """
-    GAME KEYS
-    u - undoes a move
-    h - gets a solution hint
-    """
-    )
-    game_keys = Table(show_header=False, show_lines=False)
-    game_keys.add_column()
-    game_keys.add_row(game_keys_text)
+    game_keys = get_game_keys()
     
     print(banner)
     rprint(instructions)
