@@ -43,7 +43,8 @@ def main():
             eval(game_key_func[f'{prompt}'])
         else:
             try:
-                translate_move(prompt)
+                location, number = translate_move(prompt)
+                make_move(location, number, grid)
             except SudokuError as e:
                 clear_screen()
                 print(get_sudoku_grid(grid))
