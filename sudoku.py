@@ -15,31 +15,42 @@ GAME_KEYS = {'undo': 'u', 'hint': 'h'}
 
 def main():
     show_game_instructions()
-    while True:
-        prompt = input('Enter y to continue, q to quit\n> ')
-        if not prompt.lower() in ('y', 'q'):
-            print('Unknown choice. Try again!')
-        else:
-            break
-    
-    if prompt.lower() == 'q':
+
+    if prompt_to_continue() == 'q':
         sys.exit('Goodbye!')
+    clear_screen()
 
     line = get_quiz_and_solution_line('pre-solved-sudokus.txt')
-    grid, _ = build_puzzle_solution_pair(line)
+    grid, solution = build_puzzle_solution_pair(line)
     print(get_sudoku_grid(grid))
     explain_coordinate_system()
+
+    if prompt_to_continue() == 'q':
+        sys.exit('Goodbye!')
+    clear_screen()
+
+    print(get_sudoku_grid(grid))
+    get_game_keys()
+
     while True:
         prompt = input('Enter y to continue, q to quit\n> ')
         if not prompt.lower() in ('y', 'q'):
             print('Unknown choice. Try again!')
         else:
             break
+def prompt_to_continue() -> str:
+    """Returns the input that the user entered when prompted to continue.
     
-    if prompt.lower() == 'q':
-        sys.exit('Goodbye!')
+    The user is re-prompted if they enter an invalid choice.
+    """
+    while True:
+        prompt = input('Enter y to continue, q to quit\n> ')
+        if not prompt.lower() in ('y', 'q'):
+            print('Unknown choice. Try again!')
+        else:
+            break
+    return prompt.lower()
 
-    print(get_sudoku_grid(grid))
 
 def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:     
     """Returns a Tuple containing quiz and solution for the Sudoku game. """
