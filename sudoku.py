@@ -11,7 +11,7 @@ import sys
 
 
 board_state = []
-
+GAME_KEYS = {'undo': 'u', 'hint': 'h'}
 
 def main():
     show_game_instructions()
@@ -275,6 +275,15 @@ def show_game_instructions() -> None:
     print(banner)
     rprint(instructions)
     rprint(game_keys)
+
+
+def get_game_keys():
+    """Shows possible keys that the user can press in the game.
+    """
+    keys = Table(show_header=False, show_lines=False)
+    keys.add_column()
+    keys.add_row('│ '.join(f'{v}: {k} ' for k,v in GAME_KEYS.items()))
+    return keys
 
 
 if __name__ == '__main__':
