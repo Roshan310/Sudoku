@@ -32,7 +32,7 @@ def translate_move(coordinate_move: str) -> Tuple[Tuple[int, int], int]:
         )
 
     if not (coordinate_move[0].isdecimal() and 1 <= int(coordinate_move[0]) <= 9):
-        raise SudokuError('Only numbers from 1 to 8 can be placed into the grid.')
+        raise SudokuError('Only numbers from 1 to 9 can be placed into the grid.')
     
     number = int(coordinate_move[0])
 
