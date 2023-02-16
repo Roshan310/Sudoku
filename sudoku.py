@@ -8,7 +8,7 @@ from textwrap import dedent
 from rich.table import Table
 from rich import print as rprint
 import sys
-
+import os
 
 board_state = []
 GAME_KEYS = {'undo': 'u', 'hint': 'h'}
@@ -63,6 +63,11 @@ def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:
         grid_question = solution['quizzes']
     
     return (grid_question, grid_soln)
+
+
+def clear_screen():
+    """Clears the terminal screen"""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
