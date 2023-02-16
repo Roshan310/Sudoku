@@ -37,19 +37,20 @@ def main():
         if not prompt.lower() in ('y', 'q'):
             print('Unknown choice. Try again!')
         else:
-            break
+
+
 def prompt_to_continue() -> str:
     """Returns the input that the user entered when prompted to continue.
     
     The user is re-prompted if they enter an invalid choice.
     """
     while True:
-        prompt = input('Enter y to continue, q to quit\n> ')
-        if not prompt.lower() in ('y', 'q'):
+        prompt = input('Enter y to continue, q to quit\n> ').strip().lower()
+        if not prompt in ('y', 'q'):
             print('Unknown choice. Try again!')
         else:
             break
-    return prompt.lower()
+    return prompt
 
 
 def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:     
