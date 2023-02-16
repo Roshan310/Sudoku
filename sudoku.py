@@ -7,7 +7,39 @@ from typing import List, Tuple
 from textwrap import dedent
 from rich.table import Table
 from rich import print as rprint
+import sys
 
+
+board_state = []
+
+
+def main():
+    show_game_instructions()
+    while True:
+        prompt = input('Enter y to continue, q to quit\n> ')
+        if not prompt.lower() in ('y', 'q'):
+            print('Unknown choice. Try again!')
+        else:
+            break
+    
+    if prompt.lower() == 'q':
+        sys.exit('Goodbye!')
+
+    line = get_quiz_and_solution_line('pre-solved-sudokus.txt')
+    grid, _ = build_puzzle_solution_pair(line)
+    print(get_sudoku_grid(grid))
+    explain_coordinate_system()
+    while True:
+        prompt = input('Enter y to continue, q to quit\n> ')
+        if not prompt.lower() in ('y', 'q'):
+            print('Unknown choice. Try again!')
+        else:
+            break
+    
+    if prompt.lower() == 'q':
+        sys.exit('Goodbye!')
+
+    print(get_sudoku_grid(grid))
 
 def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:     
     """Returns a Tuple containing quiz and solution for the Sudoku game. """
@@ -20,31 +52,6 @@ def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:
         grid_question = solution['quizzes']
     
     return (grid_question, grid_soln)
-
-# fmt: off
-# blank numbers are represented as ' '
-line = get_quiz_and_solution_line('pre-solved-sudokus.txt')
-grid, grid_complete = build_puzzle_solution_pair(line)
-
-# grid = [
-#     [' ', '6', ' ', '8', ' ', ' ', '5', ' ', ' '],
-#     [' ', ' ', '5', ' ', ' ', ' ', '3', '6', '7'],
-#     ['3', '7', ' ', ' ', '6', '5', '8', ' ', '9'],
-#     ['6', ' ', '9', ' ', ' ', '2', '1', ' ', ' '],
-#     [' ', ' ', '1', '4', '8', '9', '2', ' ', ' '],
-#     [' ', ' ', ' ', '3', ' ', '6', '9', ' ', ' '],
-#     [' ', '5', ' ', ' ', ' ', ' ', '4', ' ', ' '],
-#     [' ', '1', ' ', '5', '4', '7', ' ', ' ', '3'],
-#     [' ', '9', '6', ' ', '3', '8', ' ', ' ', '1'],
-# ]
-# fmt: on
-
-board_state = []
-
-
-def main():
-    show_game_instructions()
-    
 
 
 def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
@@ -207,6 +214,23 @@ def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
             break
 
     return loc_and_num
+
+
+def explain_coordinate_system():
+    explanation = dedent("""
+    You place numbers by typing in what number you want to place,
+    and then where in the grid you would like to place it.
+
+    9A3 would place a 9 in location A3 of the grid.
+    Entering 9a3 or 93a or 93A would do the same thing.
+    """)
+
+    coordinate_explanation = Table(show_header=False, show_lines=False)
+    coordinate_explanation.add_column()
+    coordinate_explanation.add_row(explanation)
+
+    rprint(coordinate_explanation)
+
 
 def show_game_instructions() -> None:
     """Prints the game's instructions"""
