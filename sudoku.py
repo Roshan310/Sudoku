@@ -116,7 +116,7 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
 
     The `loc` (0, 1) refers to the second number (index 1) of the first row (index 0) in the `grid`.
     """
-
+    #unpacks the row and col from the `loc` tuple
     _row, _col = loc
     this_num = grid[_row][_col]
 
@@ -125,6 +125,8 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
 
     # Delete the number that is being checked from the column
     del column_nums[column_nums.index(this_num)]
+
+    #returns True if the number is in the column else returns False
     return this_num in column_nums
 
 
@@ -161,6 +163,9 @@ def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
     # Check if the desired location is empty or not
     if grid[row][col] == " ":
         grid[row][col] = str(number)
+
+        # Add the current location and number to the board_state list after each move.
+        #This makes it easier to undo the last move later on.
         board_state.append((loc, number))
     else:
         print("There's a number already in that position!!")
@@ -173,7 +178,7 @@ def undo_move(grid: List[List[str]]):
         print("You haven't made a move yet!")
         return
 
-    # Get the last location and number the player placed the move in grid
+    # Get the last location and number from the board_state list.
     loc, number = board_state.pop()
     row, col = loc
     grid[row][col] = " "
