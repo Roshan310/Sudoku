@@ -16,7 +16,10 @@ GAME_KEYS = {'undo': 'u', 'hint': 'h'}
 def main():
     show_game_instructions()
 
-    if prompt_to_continue() == 'q':
+    try:
+        if prompt_to_continue() == 'q':
+            sys.exit('Goodbye!')
+    except (KeyboardInterrupt, EOFError):
         sys.exit('Goodbye!')
     clear_screen()
 
@@ -25,9 +28,12 @@ def main():
     print(get_sudoku_grid(grid))
     explain_coordinate_system()
 
-    if prompt_to_continue() == 'q':
-        sys.exit('Goodbye!')
-    clear_screen()
+    try:
+        if prompt_to_continue() == 'q':
+            sys.exit('Goodbye!')
+        clear_screen()
+    except (KeyboardInterrupt, EOFError):
+            sys.exit('Goodbye!')
 
     print(get_sudoku_grid(grid))
     rprint(get_game_keys())
