@@ -306,12 +306,8 @@ def show_game_instructions() -> None:
     instructions = Table(show_header=False, show_lines=False)
     instructions.add_column()
     instructions.add_row(instructions_text)
-
-    game_keys = get_game_keys()
-    
     print(banner)
     rprint(instructions)
-    rprint(game_keys)
 
 
 def get_game_keys():
