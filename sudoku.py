@@ -38,10 +38,12 @@ def main():
         }
 
     while True:
-        prompt = input('Enter move, or other game key\n> ').strip().lower()
+        prompt = input('Enter move, or other game key (q to quit)\n> ').strip().lower()
         if prompt in (tuple(GAME_KEYS.values())): # a game key was entered
             eval(game_key_func[f'{prompt}'])
         else:
+            if prompt == 'q':
+                sys.exit('Goodbye!')
             try:
                 location, number = translate_move(prompt)
                 make_move(location, number, grid)
