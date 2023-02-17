@@ -38,7 +38,11 @@ def main():
         }
 
     while True:
-        prompt = input('Enter move, or other game key (q to quit)\n> ').strip().lower()
+        try:
+            prompt = input('Enter move, or other game key (q to quit)\n> ').strip().lower()
+        except KeyboardInterrupt:
+            sys.exit('Goodbye!')
+            
         if prompt in (tuple(GAME_KEYS.values())): # a game key was entered
             eval(game_key_func[f'{prompt}'])
         else:
