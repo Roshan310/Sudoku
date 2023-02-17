@@ -45,7 +45,7 @@ def test_coordinates_that_are_longer_or_shorter_than_expected_are_caught():
 
 
 def test_invalid_sudoku_number_in_coordinate_is_caught():
-    with pytest.raises(SudokuError, match='Only numbers from 1 to 8 can be placed into the grid.'):
+    with pytest.raises(SudokuError, match='Only numbers from 1 to 9 can be placed into the grid.'):
         translate_move('0A1')
         translate_move('#E8')
 
@@ -216,7 +216,7 @@ def test_sudoku_is_solved():
 
 
 def test_line_with_puzzle_and_solution_yields_a_puzzle_solution_pair():
-    line = '004300209005009001070060043006002087190007400050083000600000105003508690042910300,864371259325849761971265843436192587198657432257483916689734125713528694542916378'
+    line = '004300209005009001070060043006002087190007400050083000600000105003508690042910300','864371259325849761971265843436192587198657432257483916689734125713528694542916378'
     expected_puzzle = [
         [' ', ' ', '4', '3', ' ', ' ', '2', ' ', '9'], 
         [' ', ' ', '5', ' ', ' ', '9', ' ', ' ', '1'], 
