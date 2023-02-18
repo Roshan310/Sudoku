@@ -5,7 +5,7 @@ import random
 from sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
 from typing import List, Tuple
 from textwrap import dedent
-from rich.table import Table
+from rich.table import Table, box
 from rich import print as rprint
 import sys
 import os
@@ -25,8 +25,7 @@ def main():
 
     line = get_quiz_and_solution_line('pre-solved-sudokus.txt')
     grid, solution = build_puzzle_solution_pair(line)
-    print(get_sudoku_grid(grid))
-    explain_coordinate_system()
+    rprint(split_UI(get_sudoku_grid(grid), explain_coordinate_system()))
 
     try:
         if prompt_to_continue() == 'q':
@@ -35,8 +34,7 @@ def main():
     except (KeyboardInterrupt, EOFError):
             sys.exit('Goodbye!')
 
-    print(get_sudoku_grid(grid))
-    rprint(get_game_keys())
+    rprint(split_UI(get_sudoku_grid(grid), get_game_keys()))
 
     game_key_func = {
         'u': 'undo_move(grid)', 
@@ -59,13 +57,22 @@ def main():
                 make_move(location, number, grid)
             except SudokuError as e:
                 clear_screen()
-                print(get_sudoku_grid(grid))
-                rprint(get_game_keys())
+                rprint(split_UI(get_sudoku_grid(grid), get_game_keys()))
                 rprint(f'[bold red]{e.error_message}')
                 continue
         clear_screen()
-        print(get_sudoku_grid(grid))
-        rprint(get_game_keys())
+        rprint(split_UI(get_sudoku_grid(grid), get_game_keys()))
+
+
+def split_UI(left_element, right_element) -> Table:
+    """Returns a rich table with the `left_element` on the left of the table,
+    and the `right_element` on the right of the table.
+    """
+    UI = Table(show_header=False, show_lines=False, box=box.ROUNDED, padding=(0,1,0,1))
+    UI.add_column()
+    UI.add_column()
+    UI.add_row(left_element, right_element)
+    return UI
 
 
 def prompt_to_continue() -> str:
