@@ -10,7 +10,7 @@ from rich import print as rprint
 import sys
 import os
 
-board_state = []
+board_state: List[Tuple[Tuple[int, int], int]] = []
 GAME_KEYS = {'undo': 'u', 'hint': 'h'}
 
 def main():
@@ -102,7 +102,7 @@ def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:
     return (grid_question, grid_soln)
 
 
-def clear_screen():
+def clear_screen() -> None:
     """Clears the terminal screen"""
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -215,7 +215,7 @@ def sudoku_is_solved(grid: List[List[str]]) -> bool:
     return True
 
 
-def get_a_hint(grid_incomplete: List[List[str]], grid_complete: List[List[str]]):
+def get_a_hint(grid_incomplete: List[List[str]], grid_complete: List[List[str]]) -> None:
     """Gives the player a hint, by revealing one or more numbers in the unsolved Sudoku."""
     
     row, col, number = get_loc_and_number_for_hint(grid_incomplete, grid_complete)
@@ -273,7 +273,7 @@ def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
     return loc_and_num
 
 
-def explain_coordinate_system():
+def explain_coordinate_system() -> str:
     explanation = dedent("""You place numbers by typing: 
 1) The number you want to place,
 2) Where in the grid to place.
@@ -318,7 +318,7 @@ def show_game_instructions() -> None:
     rprint(instructions)
 
 
-def get_game_keys():
+def get_game_keys() -> Table:
     """Shows possible keys that the user can press in the game.
     """
     keys = Table(show_header=False, show_lines=False, title='game keys:', show_edge=False)
