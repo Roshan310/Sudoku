@@ -225,29 +225,27 @@ def get_a_hint(grid_incomplete: List[List[str]], grid_complete: List[List[str]])
 def get_sudoku_grid(grid: List[List[str]]) -> str:
     """Returns the sudoku grid, as a standard sudoku"""
 
-    sudoku_grid = """
-        1   2   3   4   5   6   7   8   9
-      ╔━━━┯━━━┯━━━╦━━━┯━━━┯━━━╦━━━┯━━━┯━━━╗
-    A ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ A
-      ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-    B ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ B
-      ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-    C ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ C
-      ┣━━━┿━━━┿━━━╬━━━┿━━━┿━━━╬━━━┿━━━┿━━━┫
-    D ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ D
-      ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-    E ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ E
-      ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-    F ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ F
-      ┣━━━┿━━━┿━━━╬━━━┿━━━┿━━━╬━━━┿━━━┿━━━┫
-    G ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ G
-      ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-    H ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ H
-      ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-    I ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ I
-      ╚━━━┷━━━┷━━━╩━━━┷━━━┷━━━╩━━━┷━━━┷━━━╝
-        1   2   3   4   5   6   7   8   9
-    """.format(
+    sudoku_grid = dedent("""    1   2   3   4   5   6   7   8   9
+  ╔━━━┯━━━┯━━━╦━━━┯━━━┯━━━╦━━━┯━━━┯━━━╗
+A ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ A
+  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+B ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ B
+  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+C ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ C
+  ┣━━━┿━━━┿━━━╬━━━┿━━━┿━━━╬━━━┿━━━┿━━━┫
+D ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ D
+  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+E ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ E
+  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+F ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ F
+  ┣━━━┿━━━┿━━━╬━━━┿━━━┿━━━╬━━━┿━━━┿━━━┫
+G ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ G
+  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+H ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ H
+  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
+I ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ I
+  ╚━━━┷━━━┷━━━╩━━━┷━━━┷━━━╩━━━┷━━━┷━━━╝
+    1   2   3   4   5   6   7   8   9""").format(
         *[cell for row in grid for cell in row]
     )
 
@@ -276,19 +274,16 @@ def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
 
 
 def explain_coordinate_system():
-    explanation = dedent("""
-    You place numbers by typing in what number you want to place,
-    and then where in the grid you would like to place it.
+    explanation = dedent("""You place numbers by typing: 
+1) The number you want to place,
+2) Where in the grid to place.
 
-    9A3 would place a 9 in location A3 of the grid.
-    Entering 9a3 or 93a or 93A would do the same thing.
-    """)
+9A3 places 9 in location A3 of the grid.
+Entering 9a3 or 93a or 93A does the same thing.
 
-    coordinate_explanation = Table(show_header=False, show_lines=False)
-    coordinate_explanation.add_column()
-    coordinate_explanation.add_row(explanation)
+Incorrect numbers, or locations are rejected.""")
 
-    rprint(coordinate_explanation)
+    return explanation
 
 
 def show_game_instructions() -> None:
