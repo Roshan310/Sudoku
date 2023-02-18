@@ -13,6 +13,7 @@ import os
 board_state: List[Tuple[Tuple[int, int], int]] = []
 GAME_KEYS = {'undo': 'u', 'hint': 'h'}
 
+
 def main():
     show_game_instructions()
 
@@ -32,14 +33,14 @@ def main():
             sys.exit('Goodbye!')
         clear_screen()
     except (KeyboardInterrupt, EOFError):
-            sys.exit('Goodbye!')
+        sys.exit('Goodbye!')
 
     rprint(split_UI(get_sudoku_grid(grid), get_game_keys()))
 
     game_key_func = {
-        'u': 'undo_move(grid)', 
+        'u': 'undo_move(grid)',
         'h': 'get_a_hint(grid, solution)',
-        }
+    }
 
     while True:
         try:
@@ -47,7 +48,7 @@ def main():
         except (KeyboardInterrupt, EOFError):
             sys.exit('Goodbye!')
 
-        if prompt in (tuple(GAME_KEYS.values())): # a game key was entered
+        if prompt in (tuple(GAME_KEYS.values())):  # a game key was entered
             eval(game_key_func[f'{prompt}'])
         else:
             if prompt == 'q':
@@ -68,7 +69,7 @@ def split_UI(left_element, right_element) -> Table:
     """Returns a rich table with the `left_element` on the left of the table,
     and the `right_element` on the right of the table.
     """
-    UI = Table(show_header=False, show_lines=False, box=box.ROUNDED, padding=(0,1,0,1))
+    UI = Table(show_header=False, show_lines=False, box=box.ROUNDED, padding=(0, 1, 0, 1))
     UI.add_column()
     UI.add_column()
     UI.add_row(left_element, right_element)
@@ -77,7 +78,7 @@ def split_UI(left_element, right_element) -> Table:
 
 def prompt_to_continue() -> str:
     """Returns the input that the user entered when prompted to continue.
-    
+
     The user is re-prompted if they enter an invalid choice.
     """
     while True:
@@ -89,8 +90,8 @@ def prompt_to_continue() -> str:
     return prompt
 
 
-def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:     
-    """Returns a Tuple containing quiz and solution for the Sudoku game. """
+def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:
+    """Returns a Tuple containing quiz and solution for the Sudoku game."""
 
     with open(filename, 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -98,7 +99,7 @@ def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:
         solution = random.choice(quiz_and_soln)
         grid_soln = solution['solutions']
         grid_question = solution['quizzes']
-    
+
     return (grid_question, grid_soln)
 
 
@@ -129,7 +130,7 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
 
     The `loc` (0, 1) refers to the second number (index 1) of the first row (index 0) in the `grid`.
     """
-    #unpacks the row and col from the `loc` tuple
+    # unpacks the row and col from the `loc` tuple
     _row, _col = loc
     this_num = grid[_row][_col]
 
@@ -139,7 +140,7 @@ def num_has_column_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
     # Delete the number that is being checked from the column
     del column_nums[column_nums.index(this_num)]
 
-    #returns True if the number is in the column else returns False
+    # returns True if the number is in the column else returns False
     return this_num in column_nums
 
 
@@ -178,10 +179,11 @@ def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
         grid[row][col] = str(number)
 
         # Add the current location and number to the board_state list after each move.
-        #This makes it easier to undo the last move later on.
+        # This makes it easier to undo the last move later on.
         board_state.append((loc, number))
     else:
         print("There's a number already in that position!!")
+
 
 def undo_move(grid: List[List[str]]):
     """Undoes a move made by the player."""
@@ -217,7 +219,7 @@ def sudoku_is_solved(grid: List[List[str]]) -> bool:
 
 def get_a_hint(grid_incomplete: List[List[str]], grid_complete: List[List[str]]) -> None:
     """Gives the player a hint, by revealing one or more numbers in the unsolved Sudoku."""
-    
+
     row, col, number = get_loc_and_number_for_hint(grid_incomplete, grid_complete)
     make_move((row, col), number, grid_incomplete)
 
@@ -225,7 +227,8 @@ def get_a_hint(grid_incomplete: List[List[str]], grid_complete: List[List[str]])
 def get_sudoku_grid(grid: List[List[str]]) -> str:
     """Returns the sudoku grid, as a standard sudoku"""
 
-    sudoku_grid = dedent("""    1   2   3   4   5   6   7   8   9
+    sudoku_grid = dedent(
+        """    1   2   3   4   5   6   7   8   9
   ╔━━━┯━━━┯━━━╦━━━┯━━━┯━━━╦━━━┯━━━┯━━━╗
 A ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ A
   ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
@@ -245,15 +248,14 @@ H ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ H
   ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
 I ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ I
   ╚━━━┷━━━┷━━━╩━━━┷━━━┷━━━╩━━━┷━━━┷━━━╝
-    1   2   3   4   5   6   7   8   9""").format(
-        *[cell for row in grid for cell in row]
-    )
+    1   2   3   4   5   6   7   8   9"""
+    ).format(*[cell for row in grid for cell in row])
 
     return sudoku_grid
 
 
 def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
-    """Returns the location and number for the hint """
+    """Returns the location and number for the hint"""
 
     loc_and_num = []
     quiz_and_soln = [(row1, row2) for row1, row2 in zip(grid_incomplete, grid_complete)]
@@ -274,14 +276,16 @@ def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
 
 
 def explain_coordinate_system() -> str:
-    explanation = dedent("""You place numbers by typing: 
+    explanation = dedent(
+        """You place numbers by typing: 
 1) The number you want to place,
 2) Where in the grid to place.
 
 9A3 places 9 in location A3 of the grid.
 Entering 9a3 or 93a or 93A does the same thing.
 
-Incorrect numbers, or locations are rejected.""")
+Incorrect numbers, or locations are rejected."""
+    )
 
     return explanation
 
@@ -319,12 +323,11 @@ def show_game_instructions() -> None:
 
 
 def get_game_keys() -> Table:
-    """Shows possible keys that the user can press in the game.
-    """
+    """Shows possible keys that the user can press in the game."""
     keys = Table(show_header=False, show_lines=False, title='game keys:', show_edge=False)
     keys.add_column()
-    keys.add_row() # for additional vertical spacing
-    keys.add_row('\n'.join(f'{v}: {k} ' for k,v in GAME_KEYS.items()))
+    keys.add_row()  # for additional vertical spacing
+    keys.add_row('\n'.join(f'{v}: {k} ' for k, v in GAME_KEYS.items()))
     return keys
 
 
