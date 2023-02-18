@@ -321,9 +321,10 @@ def show_game_instructions() -> None:
 def get_game_keys():
     """Shows possible keys that the user can press in the game.
     """
-    keys = Table(show_header=False, show_lines=False)
+    keys = Table(show_header=False, show_lines=False, title='game keys:', show_edge=False)
     keys.add_column()
-    keys.add_row('│ '.join(f'{v}: {k} ' for k,v in GAME_KEYS.items()))
+    keys.add_row() # for additional vertical spacing
+    keys.add_row('\n'.join(f'{v}: {k} ' for k,v in GAME_KEYS.items()))
     return keys
 
 
