@@ -144,3 +144,5 @@ settings.json
 # swap files
 *.swp
 
+# asciinema terminal recorder cast files
+*.cast
