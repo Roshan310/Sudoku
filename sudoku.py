@@ -26,7 +26,7 @@ def main():
 
     line = get_quiz_and_solution_line('pre-solved-sudokus.txt')
     grid, solution = build_puzzle_solution_pair(line)
-    rprint(split_UI(get_sudoku_grid(grid), explain_coordinate_system()))
+    rprint(vertical_split(get_sudoku_grid(grid), explain_coordinate_system()))
 
     try:
         if prompt_to_continue() == 'q':
@@ -35,7 +35,7 @@ def main():
     except (KeyboardInterrupt, EOFError):
         sys.exit('Goodbye!')
 
-    rprint(split_UI(get_sudoku_grid(grid), get_game_keys()))
+    rprint(vertical_split(get_sudoku_grid(grid), get_game_keys()))
 
     game_key_func = {
         'u': 'undo_move(grid)',
@@ -58,14 +58,14 @@ def main():
                 make_move(location, number, grid)
             except SudokuError as e:
                 clear_screen()
-                rprint(split_UI(get_sudoku_grid(grid), get_game_keys()))
+                rprint(vertical_split(get_sudoku_grid(grid), get_game_keys()))
                 rprint(f'[bold red]{e.error_message}')
                 continue
         clear_screen()
-        rprint(split_UI(get_sudoku_grid(grid), get_game_keys()))
+        rprint(vertical_split(get_sudoku_grid(grid), get_game_keys()))
 
 
-def split_UI(left_element, right_element) -> Table:
+def vertical_split(left_element, right_element) -> Table:
     """Returns a rich table with the `left_element` on the left of the table,
     and the `right_element` on the right of the table.
     """
