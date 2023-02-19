@@ -76,6 +76,17 @@ def vertical_split(left_element, right_element) -> Table:
     return UI
 
 
+def horizontal_split(top_element, bottom_element) -> Table:
+    """Returns a rich table with the `top_element` at the top of the table,
+    and the `bottom_element` at the bottom of the table.
+    """
+    UI = Table(show_header=False, show_lines=False, box=box.ROUNDED, padding=(0, 1, 0, 1))
+    UI.add_column()
+    UI.add_row(top_element)
+    UI.add_row(bottom_element)
+    return UI
+
+
 def prompt_to_continue() -> str:
     """Returns the input that the user entered when prompted to continue.
 
