@@ -1,14 +1,15 @@
 """Simulates a game of Sudoku"""
 
 import csv
+import os
 import random
-from sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
-from typing import List, Tuple
-from textwrap import dedent
 from rich.table import Table, box
 from rich import print as rprint
+from sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
 import sys
-import os
+from textwrap import dedent
+from typing import List, Tuple
+
 
 board_state: List[Tuple[Tuple[int, int], int]] = []
 GAME_KEYS = {'undo': 'u', 'hint': 'h'}
