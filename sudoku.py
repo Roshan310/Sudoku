@@ -95,10 +95,10 @@ def prompt_to_continue() -> str:
     """
     while True:
         prompt = input('Enter y to continue, q to quit\n> ').strip().lower()
-        if not prompt in ('y', 'q'):
-            print('Unknown choice. Try again!')
-        else:
+        if prompt in ('y', 'q'):
             break
+        else:
+            print('Unknown choice. Try again!')
     return prompt
 
 
