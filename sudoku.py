@@ -184,6 +184,7 @@ def num_has_sub_grid_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
 
 def make_move(loc: Tuple[int, int], number: int, grid: List[List[str]]) -> None:
     """Places the `number` at `loc` location in the `grid`"""
+
     row, col = loc
 
     # Check if the desired location is empty or not
@@ -272,7 +273,6 @@ def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
     loc_and_num = []
     quiz_and_soln = [(row1, row2) for row1, row2 in zip(grid_incomplete, grid_complete)]
     hint_soln = random.choice(quiz_and_soln)
-    print(hint_soln)
     quiz, soln = hint_soln
     for row in range(9):
         if grid_complete[row] == hint_soln[1]:
