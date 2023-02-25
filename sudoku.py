@@ -1,5 +1,5 @@
 """Simulates a game of Sudoku"""
-
+from colorama import Fore, Back
 import csv
 import os
 import random
@@ -17,6 +17,8 @@ GAME_KEYS = {'undo': 'u', 'hint': 'h'}
 
 def main():
     show_game_instructions()
+    print(Fore.CYAN)
+    print(Back.BLUE)
 
     try:
         if prompt_to_continue() == 'q':
