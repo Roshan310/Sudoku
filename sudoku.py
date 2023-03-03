@@ -1,22 +1,19 @@
 """Simulates a game of Sudoku"""
 from colorama import Fore, Back
 import csv
-import os
 import random
-from rich.table import Table, box
+import ui
 from rich import print as rprint
 from sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
 import sys
 from textwrap import dedent
 from typing import List, Tuple
 
-
 board_state: List[Tuple[Tuple[int, int], int]] = []
-GAME_KEYS = {'undo': 'u', 'hint': 'h'}
 
 
 def main():
-    show_game_instructions()
+    ui.show_game_instructions()
     print(Fore.CYAN)
     print(Back.BLUE)
 
@@ -25,20 +22,20 @@ def main():
             sys.exit('Goodbye!')
     except (KeyboardInterrupt, EOFError):
         sys.exit('Goodbye!')
-    clear_screen()
+    ui.clear_screen()
 
     line = get_quiz_and_solution_line('pre-solved-sudokus.txt')
     grid, solution = build_puzzle_solution_pair(line)
-    rprint(vertical_split(get_sudoku_grid(grid), explain_coordinate_system()))
+    rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.explain_coordinate_system()))
 
     try:
         if prompt_to_continue() == 'q':
             sys.exit('Goodbye!')
-        clear_screen()
+        ui.clear_screen()
     except (KeyboardInterrupt, EOFError):
         sys.exit('Goodbye!')
 
-    rprint(vertical_split(get_sudoku_grid(grid), get_game_keys()))
+    rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.get_game_keys()))
 
     game_key_func = {
         'u': 'undo_move(grid)',
@@ -51,7 +48,7 @@ def main():
         except (KeyboardInterrupt, EOFError):
             sys.exit('Goodbye!')
 
-        if prompt in (tuple(GAME_KEYS.values())):  # a game key was entered
+        if prompt in (tuple(ui.GAME_KEYS.values())):  # a game key was entered
             eval(game_key_func[f'{prompt}'])
         else:
             if prompt == 'q':
@@ -60,34 +57,12 @@ def main():
                 location, number = translate_move(prompt)
                 make_move(location, number, grid)
             except SudokuError as e:
-                clear_screen()
-                rprint(vertical_split(get_sudoku_grid(grid), get_game_keys()))
+                ui.clear_screen()
+                rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.get_game_keys()))
                 rprint(f'[bold red]{e.error_message}')
                 continue
-        clear_screen()
-        rprint(vertical_split(get_sudoku_grid(grid), get_game_keys()))
-
-
-def vertical_split(left_element, right_element) -> Table:
-    """Returns a rich table with the `left_element` on the left of the table,
-    and the `right_element` on the right of the table.
-    """
-    UI = Table(show_header=False, show_lines=False, box=box.ROUNDED, padding=(0, 1, 0, 1))
-    UI.add_column()
-    UI.add_column()
-    UI.add_row(left_element, right_element)
-    return UI
-
-
-def horizontal_split(top_element, bottom_element) -> Table:
-    """Returns a rich table with the `top_element` at the top of the table,
-    and the `bottom_element` at the bottom of the table.
-    """
-    UI = Table(show_header=False, show_lines=False, box=box.ROUNDED, padding=(0, 1, 0, 1))
-    UI.add_column()
-    UI.add_row(top_element)
-    UI.add_row(bottom_element)
-    return UI
+        ui.clear_screen()
+        rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.get_game_keys()))
 
 
 def prompt_to_continue() -> str:
@@ -115,11 +90,6 @@ def get_quiz_and_solution_line(filename: str) -> Tuple[str, str]:
         grid_question = solution['quizzes']
 
     return (grid_question, grid_soln)
-
-
-def clear_screen() -> None:
-    """Clears the terminal screen"""
-    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def num_has_row_copy(loc: Tuple[int, int], grid: List[List[str]]) -> bool:
@@ -239,36 +209,6 @@ def get_a_hint(grid_incomplete: List[List[str]], grid_complete: List[List[str]])
     make_move((row, col), number, grid_incomplete)
 
 
-def get_sudoku_grid(grid: List[List[str]]) -> str:
-    """Returns the sudoku grid, as a standard sudoku"""
-
-    sudoku_grid = dedent(
-        """    1   2   3   4   5   6   7   8   9
-  ╔━━━┯━━━┯━━━╦━━━┯━━━┯━━━╦━━━┯━━━┯━━━╗
-A ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ A
-  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-B ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ B
-  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-C ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ C
-  ┣━━━┿━━━┿━━━╬━━━┿━━━┿━━━╬━━━┿━━━┿━━━┫
-D ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ D
-  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-E ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ E
-  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-F ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ F
-  ┣━━━┿━━━┿━━━╬━━━┿━━━┿━━━╬━━━┿━━━┿━━━┫
-G ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ G
-  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-H ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ H
-  ┠───┼───┼───╂───┼───┼───╂───┼───┼───┨
-I ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ {} │ {} │ {} ┃ I
-  ╚━━━┷━━━┷━━━╩━━━┷━━━┷━━━╩━━━┷━━━┷━━━╝
-    1   2   3   4   5   6   7   8   9"""
-    ).format(*[cell for row in grid for cell in row])
-
-    return sudoku_grid
-
-
 def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
     """Returns the location and number for the hint"""
 
@@ -287,62 +227,6 @@ def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
             break
 
     return loc_and_num
-
-
-def explain_coordinate_system() -> str:
-    explanation = dedent(
-        """You place numbers by typing: 
-1) The number you want to place,
-2) Where in the grid to place.
-
-9A3 places 9 in location A3 of the grid.
-Entering 9a3 or 93a or 93A does the same thing.
-
-Incorrect numbers, or locations are rejected."""
-    )
-
-    return explanation
-
-
-def show_game_instructions() -> None:
-    """Prints the game's instructions"""
-    banner = dedent(
-        """    
-    ███████╗██╗   ██╗██████╗  ██████╗ ██╗  ██╗██╗   ██╗
-    ██╔════╝██║   ██║██╔══██╗██╔═══██╗██║ ██╔╝██║   ██║
-    ███████╗██║   ██║██║  ██║██║   ██║█████╔╝ ██║   ██║
-    ╚════██║██║   ██║██║  ██║██║   ██║██╔═██╗ ██║   ██║
-    ███████║╚██████╔╝██████╔╝╚██████╔╝██║  ██╗╚██████╔╝
-    ╚══════╝ ╚═════╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝ ╚═════╝
-    """
-    )
-    instructions_text = dedent(
-        """
-    The game consists of a large 9 X 9 grid of cells,
-    with smaller 3 X 3 sub-grids.
-
-    You win if you fill in the cells with numbers 1 to 9,
-    such that:
-
-    + No number is repeated in a sub-grid
-    + No number is repeated in its own row
-    + No number repeats in its own column
-    """
-    )
-    instructions = Table(show_header=False, show_lines=False)
-    instructions.add_column()
-    instructions.add_row(instructions_text)
-    print(banner)
-    rprint(instructions)
-
-
-def get_game_keys() -> Table:
-    """Shows possible keys that the user can press in the game."""
-    keys = Table(show_header=False, show_lines=False, title='game keys:', show_edge=False)
-    keys.add_column()
-    keys.add_row()  # for additional vertical spacing
-    keys.add_row('\n'.join(f'{v}: {k} ' for k, v in GAME_KEYS.items()))
-    return keys
 
 
 if __name__ == '__main__':
