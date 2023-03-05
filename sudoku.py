@@ -1,10 +1,10 @@
 """Simulates a game of Sudoku"""
-from colorama import Fore, Back
+# from colorama import Fore, Back
 import csv
 import random
-import ui
+import utils.ui as ui
 from rich import print as rprint
-from sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
+from utils.sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
 import sys
 from textwrap import dedent
 from typing import List, Tuple
@@ -15,8 +15,8 @@ board_state: List[Tuple[Tuple[int, int], int]] = []
 
 def main():
     ui.show_game_instructions()
-    print(Fore.CYAN)
-    print(Back.BLUE)
+    # print(Fore.CYAN)
+    # print(Back.BLUE)
 
     try:
         if prompt_to_continue() == 'q':
