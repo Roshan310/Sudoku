@@ -1,6 +1,6 @@
 import pytest
 from sudoku import make_move, num_has_row_copy, num_has_sub_grid_copy, num_has_column_copy, undo_move, sudoku_is_solved
-from sudoku_utils import translate_move, SudokuError, build_puzzle_solution_pair
+from utils.sudoku_utils import translate_move, SudokuError, build_puzzle_solution_pair
 
 
 def test_number_with_a_row_copy_is_caught():
