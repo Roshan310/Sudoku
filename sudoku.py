@@ -6,7 +6,6 @@ import utils.ui as ui
 from rich import print as rprint
 from utils.sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
 import sys
-from textwrap import dedent
 from typing import List, Tuple
 from pathlib import Path
 
@@ -26,7 +25,6 @@ def main():
     ui.clear_screen()
 
     presolved_puzzles = Path('puzzle-dataset', 'pre-solved-sudokus.txt')
-    print(presolved_puzzles)
     line = get_quiz_and_solution_line(str(presolved_puzzles))
     grid, solution = build_puzzle_solution_pair(line)
     rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.explain_coordinate_system()))
