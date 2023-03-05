@@ -8,6 +8,7 @@ from sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
 import sys
 from textwrap import dedent
 from typing import List, Tuple
+from pathlib import Path
 
 board_state: List[Tuple[Tuple[int, int], int]] = []
 
@@ -24,7 +25,9 @@ def main():
         sys.exit('Goodbye!')
     ui.clear_screen()
 
-    line = get_quiz_and_solution_line('pre-solved-sudokus.txt')
+    presolved_puzzles = Path('puzzle-dataset', 'pre-solved-sudokus.txt')
+    print(presolved_puzzles)
+    line = get_quiz_and_solution_line(str(presolved_puzzles))
     grid, solution = build_puzzle_solution_pair(line)
     rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.explain_coordinate_system()))
 
