@@ -15,6 +15,18 @@ def clear_screen() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
+def get_sudoku_and_keys(grid: List[List[str]]) -> Table:
+    """Returns the sudoku grid and the list of possible game keys to enter, side-by-side."""
+    return split_left_right(get_sudoku_grid(grid), get_game_keys(), outer_edge=False)
+
+
+def get_info(message: str = "") -> Table:
+    """Returns the `info` section of the game UI.
+    This section is reserved for errors, and other useful texts.
+    """
+    return split_left_right('info', message, outer_edge=False)
+
+
 def get_game_keys() -> Table:
     """Shows possible keys that the user can press in the game."""
     keys = Table(show_header=False, show_lines=False, title='game keys:', show_edge=False)
