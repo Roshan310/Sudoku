@@ -29,7 +29,7 @@ def translate_move(coordinate_move: str) -> Tuple[Tuple[int, int], int]:
 
     if not len(coordinate_move) == LEGAL_COORDINATE_LENGTH:
         raise SudokuError(
-            'Coordinate is invalid.\nThe legal format is <number><row number><column letter> or <number><column letter><row number>'
+            'Coordinate is invalid. The legal format is:\n<number><row number><column letter> or\n<number><column letter><row number>'
         )
 
     if not (coordinate_move[0].isdecimal() and 1 <= int(coordinate_move[0]) <= 9):

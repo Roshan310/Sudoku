@@ -15,6 +15,18 @@ def clear_screen() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
+def get_sudoku_and_keys(grid: List[List[str]]) -> Table:
+    """Returns the sudoku grid and the list of possible game keys to enter, side-by-side."""
+    return split_left_right(get_sudoku_grid(grid), get_game_keys(), outer_edge=False)
+
+
+def get_info(message: str = "") -> Table:
+    """Returns the `info` section of the game UI.
+    This section is reserved for errors, and other useful texts.
+    """
+    return split_left_right('info', message, outer_edge=False)
+
+
 def get_game_keys() -> Table:
     """Shows possible keys that the user can press in the game."""
     keys = Table(show_header=False, show_lines=False, title='game keys:', show_edge=False)
@@ -24,25 +36,25 @@ def get_game_keys() -> Table:
     return keys
 
 
-def vertical_split(left_element, right_element) -> Table:
+def split_left_right(left_element, right_element, outer_edge=True) -> Table:
     """Returns a rich table with the `left_element` on the left of the table,
     and the `right_element` on the right of the table.
     """
-    UI = Table(show_header=False, show_lines=False, box=box.ROUNDED, padding=(0, 1, 0, 1))
-    UI.add_column()
-    UI.add_column()
+    UI = Table(show_header=False, show_edge=outer_edge, box=box.ROUNDED)
+    UI.add_column(no_wrap=True)
+    UI.add_column(no_wrap=True)
     UI.add_row(left_element, right_element)
     return UI
 
 
-def horizontal_split(top_element, bottom_element) -> Table:
+def split_up_down(top_element, bottom_element, outer_edge=True) -> Table:
     """Returns a rich table with the `top_element` at the top of the table,
     and the `bottom_element` at the bottom of the table.
     """
-    UI = Table(show_header=False, show_lines=False, box=box.ROUNDED, padding=(0, 1, 0, 1))
-    UI.add_column()
-    UI.add_row(top_element)
-    UI.add_row(bottom_element)
+    UI = Table(show_header=False, show_edge=outer_edge, box=box.ROUNDED)
+    UI.add_column(no_wrap=True)
+    UI.add_row(top_element, end_section=True)
+    UI.add_row(bottom_element, end_section=True)
     return UI
 
 

@@ -27,7 +27,7 @@ def main():
     presolved_puzzles = Path('puzzle-dataset', 'pre-solved-sudokus.txt')
     line = get_quiz_and_solution_line(str(presolved_puzzles))
     grid, solution = build_puzzle_solution_pair(line)
-    rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.explain_coordinate_system()))
+    rprint(ui.split_left_right(ui.get_sudoku_grid(grid), ui.explain_coordinate_system()))
 
     try:
         if prompt_to_continue() == 'q':
@@ -36,7 +36,7 @@ def main():
     except (KeyboardInterrupt, EOFError):
         sys.exit('Goodbye!')
 
-    rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.get_game_keys()))
+    rprint(ui.split_up_down(ui.get_sudoku_and_keys(grid), ui.get_info()))
 
     game_key_func = {
         'u': 'undo_move(grid)',
@@ -59,11 +59,11 @@ def main():
                 make_move(location, number, grid)
             except SudokuError as e:
                 ui.clear_screen()
-                rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.get_game_keys()))
-                rprint(f'[bold red]{e.error_message}')
+                rprint(ui.split_up_down(ui.get_sudoku_and_keys(grid), ui.get_info(f'[bold red]{e.error_message}')))
                 continue
         ui.clear_screen()
-        rprint(ui.vertical_split(ui.get_sudoku_grid(grid), ui.get_game_keys()))
+
+        rprint(ui.split_up_down(ui.get_sudoku_and_keys(grid), ui.get_info()))
 
 
 def prompt_to_continue() -> str:
