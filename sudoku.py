@@ -4,7 +4,7 @@ import csv
 import random
 import utils.ui as ui
 from rich import print as rprint
-from utils.sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError
+from utils.sudoku_utils import build_puzzle_solution_pair, translate_move, SudokuError, get_unfilled_cells
 import sys
 from typing import List, Tuple
 from pathlib import Path
@@ -27,6 +27,8 @@ def main():
     presolved_puzzles = Path('puzzle-dataset', 'pre-solved-sudokus.txt')
     line = get_quiz_and_solution_line(str(presolved_puzzles))
     grid, solution = build_puzzle_solution_pair(line)
+    unfilled_cells = get_unfilled_cells(grid)
+
     rprint(ui.split_left_right(ui.get_sudoku_grid(grid), ui.explain_coordinate_system()))
 
     try:
@@ -40,7 +42,7 @@ def main():
 
     game_key_func = {
         'u': 'undo_move(grid)',
-        'h': 'get_a_hint(grid, solution)',
+        'h': 'get_a_hint(grid, solution, unfilled_cells)',
     }
 
     while True:
@@ -203,31 +205,23 @@ def sudoku_is_solved(grid: List[List[str]]) -> bool:
     return True
 
 
-def get_a_hint(grid_incomplete: List[List[str]], grid_complete: List[List[str]]) -> None:
-    """Gives the player a hint, by revealing one or more numbers in the unsolved Sudoku."""
+def get_a_hint(
+    grid_incomplete: List[List[str]], grid_complete: List[List[str]], unfilled_cells: List[Tuple[int, int]]
+) -> None:
+    """Gives the player a hint, by revealing one correct number in the unsolved Sudoku."""
 
-    row, col, number = get_loc_and_number_for_hint(grid_incomplete, grid_complete)
-    make_move((row, col), number, grid_incomplete)
+    # do nothing if there are no unfilled cells left
+    if not len(unfilled_cells):
+        return
 
+    empty_cell = random.choice(unfilled_cells)
+    row = empty_cell[0]
+    col = empty_cell[1]
+    hint_number = int(grid_complete[row][col])
+    make_move((row, col), hint_number, grid_incomplete)
 
-def get_loc_and_number_for_hint(grid_incomplete, grid_complete):
-    """Returns the location and number for the hint"""
-
-    loc_and_num = []
-    quiz_and_soln = [(row1, row2) for row1, row2 in zip(grid_incomplete, grid_complete)]
-    hint_soln = random.choice(quiz_and_soln)
-    quiz, soln = hint_soln
-    for row in range(9):
-        if grid_complete[row] == hint_soln[1]:
-            loc_and_num.append(row)
-            break
-    for num1, num2 in zip(quiz, soln):
-        if num1 != num2:
-            loc_and_num.append(soln.index(num2))
-            loc_and_num.append(num2)
-            break
-
-    return loc_and_num
+    # remove this empty cell from the collection of empty cells
+    unfilled_cells.remove(empty_cell)
 
 
 if __name__ == '__main__':

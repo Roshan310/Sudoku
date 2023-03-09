@@ -87,3 +87,15 @@ def build_grid(line: str) -> List[List[str]]:
             grid.append(single_row)
             single_row = []
     return grid
+
+
+def get_unfilled_cells(grid: List[List[str]]) -> List[Tuple[int, int]]:
+    """Returns a collection of all the locations of unfilled cells in the grid"""
+    unfilled_cells = []
+
+    for row_index, row in enumerate(grid):
+        for cell_index, cell in enumerate(row):
+            if cell == ' ':
+                unfilled_cells.append((row_index, cell_index))
+
+    return unfilled_cells
